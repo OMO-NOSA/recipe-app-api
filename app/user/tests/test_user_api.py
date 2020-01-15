@@ -150,7 +150,7 @@ class PrivateUserApiTest(TestCase):
     def test_retrieve_profile_success(self):
         """
         Test retrieving profile for logged in user
-        """"
+        """
         res = self.client.get(MY_URL)
         
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -159,4 +159,26 @@ class PrivateUserApiTest(TestCase):
             'email': self.user.email
         })
         
-    
+    def test_post_not_allowed(self):
+        """
+        Tests that post is not allowed on MY_URL
+        """
+        res = self.client.post(MY_URL, ())
+        
+        self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        
+    def test_update_user_profile(self):
+        """
+        Test updating the user profile for authenticated user
+        """
+        payload = {
+            'name': 'new name',
+            'password': 'newname1234'
+        }
+        
+        res = self.client.patch(MY_URL, payload)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.name, payload['name'])
+        self.assertTrue(self.user.check_password(payload['password']))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
