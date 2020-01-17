@@ -28,12 +28,12 @@ pip install -r requirements.txt
 
 ### Change Directory into Project Dir with Manage.py file
 ```sh
-cd VMS
+cd app
 ```
 
 ### Run Django Development Server
 ```sh
-python manage.py runserver
+python manage.py runserver <designated port>
 ```
 
 ### Using Docker
